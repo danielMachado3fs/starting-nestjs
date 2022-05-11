@@ -58,6 +58,7 @@ export class MessagesService {
 
   async delete(id: number) {
     const index = this.messages.findIndex((msg) => msg?.id === id);
+
     if (index < 0) {
       throw Error(`A messagem com o ID '${id}' não foi encontrada!`);
     }

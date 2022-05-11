@@ -7,6 +7,7 @@ import {
   Put,
   Delete,
   NotFoundException,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { Message } from './Message';
@@ -66,15 +67,19 @@ export class MessagesController {
   }
 
   @Put(':id')
-  update(@Param() params, @Body() message: MessageDTO) {
-    return this.messagesService.update(+params.id, message).catch((e) => {
+  /**
+   * Para não precisar usar o +params para transformar o id em int, o ideal é utilizar o ParseIntPipe.
+   * Os pipes são classes utilizadas para transformação de dados e validação
+   */
+  update(@Param('id', ParseIntPipe) id, @Body() message: MessageDTO) {
+    return this.messagesService.update(id, message).catch((e) => {
       throw new NotFoundException(e.message);
     });
   }
 
   @Delete(':id')
-  delete(@Param() params) {
-    return this.messagesService.delete(+params.id).catch((e) => {
+  delete(@Param('id', ParseIntPipe) id) {
+    return this.messagesService.delete(id).catch((e) => {
       throw new NotFoundException(e.message);
     });
   }
