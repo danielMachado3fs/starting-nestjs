@@ -66,8 +66,8 @@ export class MessagesController {
   }
 
   @Put(':id')
-  update(@Param() params, @Body() body: Message) {
-    return this.messagesService.update(+params.id, body);
+  update(@Param() params, @Body() message: MessageDTO) {
+    return this.messagesService.update(+params.id, message);
   }
 
   @Delete(':id')

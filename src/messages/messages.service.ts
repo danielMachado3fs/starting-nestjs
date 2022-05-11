@@ -42,9 +42,13 @@ export class MessagesService {
     return data;
   }
 
-  update(id: number, message: Message) {
+  update(id: number, message: MessageDTO) {
     const index = this.messages.findIndex((message) => message.id === id);
-    this.messages[index].text = message.text;
+    const data = {
+      id,
+      ...message,
+    };
+    this.messages[index] = data;
     return this.messages[index];
   }
 
