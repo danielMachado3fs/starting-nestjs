@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Message } from './Message';
 import { MessageDTO } from './MessageDTO';
 
 @Injectable()
@@ -16,14 +15,14 @@ export class MessagesService {
   ];
 
   findAll() {
-    return this.messages;
+    return this.messages.filter(Boolean); // O filtro boolean tira todas as posições nulas do array
   }
 
   // metodo assincrono para ser possivel usar o .catch() no controller
   async findById(id: number) {
-    const message = this.messages.find((message) => message.id === id);
+    const message = this.messages.find((msg) => msg?.id === id); // operador ? checa se o elemento é null, se for, ele não avança
     if (!message) {
-      throw Error(`Menssagem com ID '${id}' não encontrada.`);
+      throw Error(`Menssagem com ID '${id}' não encontrada!`);
     }
     return message;
     /**
@@ -42,8 +41,13 @@ export class MessagesService {
     return data;
   }
 
-  update(id: number, message: MessageDTO) {
-    const index = this.messages.findIndex((message) => message.id === id);
+  async update(id: number, message: MessageDTO) {
+    const index = this.messages.findIndex((msg) => msg?.id === id);
+
+    if (index < 0) {
+      throw Error(`A messagem com o ID '${id}' não foi encontrada!`);
+    }
+
     const data = {
       id,
       ...message,
@@ -52,8 +56,12 @@ export class MessagesService {
     return this.messages[index];
   }
 
-  delete(id: number) {
-    const index = this.messages.findIndex((message) => message.id === id);
+  async delete(id: number) {
+    const index = this.messages.findIndex((msg) => msg?.id === id);
+    if (index < 0) {
+      throw Error(`A messagem com o ID '${id}' não foi encontrada!`);
+    }
+
     delete this.messages[index]; // o metodo 'delete' deixa a posição do elemento deletado como null;
     return 'Excluido com sucesso';
   }
