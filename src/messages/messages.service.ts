@@ -18,8 +18,13 @@ export class MessagesService {
     return this.messages;
   }
 
-  findById(id: number) {
-    return this.messages.find((message) => message.id === id);
+  // metodo assincrono para ser possivel usar o .catch() no controller
+  async findById(id: number) {
+    const message = this.messages.find((message) => message.id === id);
+    if (!message) {
+      throw Error(`Menssagem com ID '${id}' não encontrada.`);
+    }
+    return message;
   }
 
   create(message: Message) {
