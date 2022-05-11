@@ -27,9 +27,14 @@ export class MessagesService {
   }
 
   update(id: number, message: Message) {
-    console.log(message);
     const index = this.messages.findIndex((message) => message.id === id);
     this.messages[index].text = message.text;
     return this.messages[index];
+  }
+
+  delete(id: number) {
+    const index = this.messages.findIndex((message) => message.id === id);
+    delete this.messages[index]; // o metodo 'delete' deixa a posição do elemento deletado como null;
+    return 'Excluido com sucesso';
   }
 }
