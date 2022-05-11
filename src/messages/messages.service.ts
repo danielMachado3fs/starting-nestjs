@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Message } from './Message';
+import { MessageDTO } from './MessageDTO';
 
 @Injectable()
 export class MessagesService {
@@ -25,10 +26,20 @@ export class MessagesService {
       throw Error(`Menssagem com ID '${id}' não encontrada.`);
     }
     return message;
+    /**
+     * O Error() retorna um erro genérico 500, mas no controller está especificado como
+     * NotFound que retorna um erro 404.
+     */
   }
 
-  create(message: Message) {
-    this.messages.push(message);
+  create(message: MessageDTO) {
+    const id = this.messages.length + 1;
+    const data = {
+      id,
+      ...message, // ... pega as propriedades do objeto message, ou seja text: "Alguma coisa"
+    };
+    this.messages.push(data);
+    return data;
   }
 
   update(id: number, message: Message) {

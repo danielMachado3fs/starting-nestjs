@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { Message } from './Message';
+import { MessageDTO } from './MessageDTO';
 
 @Controller('messages')
 export class MessagesController {
@@ -56,12 +57,12 @@ export class MessagesController {
   }
 
   @Post()
-  create(@Body() body: Message) {
+  create(@Body() message: MessageDTO) {
     /**
      * @Body é o decorator que referencia o corpo da mensagem passada pelo post
      * o tipo do body é Message, esse tipo é definido na interface Message
      */
-    return this.messagesService.create(body);
+    return this.messagesService.create(message);
   }
 
   @Put(':id')
