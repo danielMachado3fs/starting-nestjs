@@ -6,11 +6,11 @@ export class MessagesService {
   private messages = [
     {
       id: 1,
-      message: 'Mensagem 1',
+      text: 'Mensagem 1',
     },
     {
       id: 2,
-      message: 'Mensagem 2',
+      text: 'Mensagem 2',
     },
   ];
 
@@ -24,5 +24,12 @@ export class MessagesService {
 
   create(message: Message) {
     this.messages.push(message);
+  }
+
+  update(id: number, message: Message) {
+    console.log(message);
+    const index = this.messages.findIndex((message) => message.id === id);
+    this.messages[index].text = message.text;
+    return this.messages[index];
   }
 }

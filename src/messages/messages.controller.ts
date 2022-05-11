@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { Message } from './Message';
 
@@ -14,8 +14,9 @@ export class MessagesController {
     return this.messagesService.findAll();
   }
 
-  @Get(':id') // @Get é um decorator que pega a rota da aplicação, e o que é passado como parâmetro é os parâmetros que a rota vai receber
-  // nesse caso por exemplo localhost/starting-with-nest/messages/1
+  @Get(':id') // @Get é um decorator que faz referencia ao metodo de requisição tipo GET
+  // o que é passado como parâmetro nesse decorator é os parâmetros que a rota vai receber
+  // nesse caso por exemplo é uma requisição do tipo GET localhost/starting-with-nest/messages/1
   // o número 1 é um id passado como paramtro para o findById()
   findById(@Param() params) {
     // @Params é um decorator que pega os parametros passados na rota
@@ -31,5 +32,10 @@ export class MessagesController {
     // @Body é o decorator que referencia o corpo da mensagem passada pelo post
     // o tipo do body é Message, esse tipo é definido na interface Message
     return this.messagesService.create(body);
+  }
+
+  @Put(':id')
+  update(@Param() params, @Body() body: Message) {
+    return this.messagesService.update(+params.id, body);
   }
 }
